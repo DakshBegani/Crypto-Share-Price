@@ -1,0 +1,28 @@
+from datetime import datetime
+from bs4 import BeautifulSoup
+import pytz
+import requests
+import time
+currency_flag = str(input("Which Shares/Cryptocurrency Price You Want?".lower()))
+date = datetime.now(pytz.timezone('Asia/Kolkata'))
+timezone = date.strftime('%d-%m-%Y')
+url = "https://www.google.com/search?q="+currency_flag+"+price"
+HTML = requests.get(url)
+soup = BeautifulSoup(HTML.text, 'html.parser')
+def get_crypto_price(bitcoin):
+    url = "https://www.google.com/search?q="+currency_flag+"+price"
+    HTML = requests.get(url)
+    soup = BeautifulSoup(HTML.text, "html.parser")
+    text = soup.find('div', attrs={'BNeawe iBp4i AP7Wnd'}).find('div', attrs={'class':"BNeawe iBp4i AP7Wnd"}).text
+    return text
+price = get_crypto_price('bitcoin')
+def main():
+    last_price = -1
+    while True:
+        crypto = 'Bitcoin'
+        price = get_crypto_price(crypto)
+        if price != last_price:
+            print(currency_flag.upper()+' PRICE: ', price + ' on' ,timezone)
+            last_price = price
+        time.sleep(3)
+main()  
